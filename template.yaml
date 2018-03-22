@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: My first serverless application.
+
+Resources:
+
+  User:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: api/aws.handler
+      Runtime: nodejs6.10
+      Environment:
+        Variables:
+          AUTH_KEY_ACCOUNT: "/* this is secret key for user service - role user */"
+          AUTH_KEY_ADMIN: "/* this is secret key for user service - role admin */"
+          AUTH_KEY_SUPER: "/* this is secret key for user service - role super admin */"
+          POLICY_SUPER: "super admin account"
+          POLICY_ADMIN: "admin"
+          POLICY_USER: "account"
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{api+}
+            Method: post
+            
+
+ 

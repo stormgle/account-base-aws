@@ -1,0 +1,37 @@
+{
+  "name": "@stormgle/user-services-aws",
+  "version": "1.0.0",
+  "description": "aws lambda function wrapped of user-services",
+  "scripts": {
+    "docker:network": "docker network prune -f && docker network create sam-local",
+    "docker:db": "docker run -v \"$PWD\":/dynamodb_local_db -p 3001:8000 --network sam-local cnadiminti/dynamodb-local",
+    "db:reset": "concurrently \"npm run docker:db\" \"node scripts/resetTable.js\" ",
+    "sam:start": "sam local start-api --docker-network sam-local",
+    "start:dev": "concurrently \"npm run db:reset\" \"npm run sam:start\"",
+    "local": "npm run docker:network && npm run start:dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stormgle/user-services-aws"
+  },
+  "keywords": [
+    "user",
+    "authentication",
+    "aws lambda"
+  ],
+  "author": "duongtdn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stormgle/user-services/issues"
+  },
+  "homepage": "https://github.com/stormgle/user-services#readme",
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "dotenv": "^5.0.1"
+  },
+  "dependencies": {
+    "@stormgle/user-services": "^1.0.4",
+    "@stormgle/userdb-dynamodb": "^1.0.3",
+    "aws-serverless-express": "^3.1.3"
+  }
+}
