@@ -22,7 +22,7 @@ Resources:
           Type: Api
           Properties:
             Path: /{api+}
-            Method: post
+            Method: any
             
 
  

@@ -20,16 +20,16 @@ app
   .useDbDriver(dbDriver)
 
 const funcs = [
-  'user/signup',
-  'user/login',
-  'user/update/profile',
-  'user/update/password',
-  'admin/query/user',
-  'admin/update/user'
+  'post/auth/signup',
+  'post/auth/login',
+  'post/me/update_profile',
+  'post/me/update_password',
+  'post/users/update',
+  'get/users/:username'
 ]
-funcs.forEach(func => {
-  // removed role in the exposed api
-  app.createFunction(`${func.replace(/^\w+\//,"/")}`, require(`@stormgle/user-services/api/${func}`))
+funcs.forEach( (func) => {
+  const { method, uri, includePath } = app.parseApi(func);
+  app.createFunction(method, uri, require(`@stormgle/user-services/api/${includePath}`))
 })  
 
 const server = awsServerlessExpress.createServer(app)
