@@ -1,7 +1,7 @@
 {
-  "name": "@stormgle/user-services-aws",
+  "name": "@stormgle/account-base-aws",
   "version": "1.0.0",
-  "description": "aws lambda function wrapped of user-services",
+  "description": "aws lambda function wrapped of account-base",
   "scripts": {
     "docker:network": "docker network prune -f && docker network create sam-local",
     "docker:db": "docker run -v \"$PWD\":/dynamodb_local_db -p 3001:8000 --network sam-local cnadiminti/dynamodb-local",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stormgle/user-services-aws"
+    "url": "git+https://github.com/stormgle/account-base-aws"
   },
   "keywords": [
     "user",
@@ -22,15 +22,15 @@
   "author": "duongtdn",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/stormgle/user-services/issues"
+    "url": "https://github.com/stormgle/account-base/issues"
   },
-  "homepage": "https://github.com/stormgle/user-services#readme",
+  "homepage": "https://github.com/stormgle/account-base#readme",
   "devDependencies": {
     "concurrently": "^3.5.1",
     "dotenv": "^5.0.1"
   },
   "dependencies": {
-    "@stormgle/user-services": "^2.1.1",
+    "@stormgle/account-base": "^2.1.2",
     "@stormgle/userdb-dynamodb": "^1.0.3",
     "aws-serverless-express": "^3.1.3"
   }
