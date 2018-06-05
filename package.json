@@ -5,10 +5,12 @@
   "scripts": {
     "docker:network": "docker network prune -f && docker network create sam-local",
     "docker:db": "docker run -v \"$PWD\":/dynamodb_local_db -p 3001:8000 --network sam-local cnadiminti/dynamodb-local",
-    "db:reset": "concurrently \"npm run docker:db\" \"node scripts/resetTable.js\" ",
+    "db:reset": "concurrently \"npm run db:start\" \"node scripts/resetDatabase.js\" ",
+    "db:init": "concurrently \"npm run db:start\" \"node scripts/initDatabase.js\" ",
+    "db:start": "npm run docker:db",
     "sam:start": "sam local start-api --docker-network sam-local",
-    "start:dev": "concurrently \"npm run db:reset\" \"npm run sam:start\"",
-    "local": "npm run docker:network && npm run start:dev"
+    "start:dev": "npm run docker:network && concurrently \"npm run db:start\" \"npm run sam:start\"",
+    "local": "npm run start:dev"
   },
   "repository": {
     "type": "git",
@@ -31,7 +33,8 @@
   },
   "dependencies": {
     "@stormgle/account-base": "^2.1.2",
-    "@stormgle/userdb-dynamodb": "^1.0.3",
+    "@stormgle/userdb-dynamodb-driver": "^1.0.3",
+    "database-abstractor": "^1.0.0",
     "aws-serverless-express": "^3.1.3"
   }
 }
