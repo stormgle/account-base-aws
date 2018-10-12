@@ -1,7 +1,5 @@
 "use strict"
 
-require('dotenv').config()
-
 /* create api */  
 const api = require('@stormgle/account-base')
 
@@ -9,31 +7,58 @@ const DatabaseAbstractor = require("database-abstractor")
 const userdb = new DatabaseAbstractor()
 const dynamodb = require('@stormgle/userdb-dynamodb-driver')
 
-const region = 'ap-southeast-1';
-const endpoint = 'dynamodb.ap-southeast-1.amazonaws.com';
+userdb.use(dynamodb());
 
-userdb.use(dynamodb({ region, endpoint }));
+/* fuunction to send reset password email */
+const aws = require('aws-sdk');
+
+const lambda = new aws.Lambda();
+
+function sendEmail({email, token}, callback) {
+
+  console.log(`Sending email containing the reset password link to ${email}`)
+
+  lambda.invoke(
+    {
+      FunctionName: 'SendEmailResetPassword',
+      InvocationType: "Event",
+      Payload: JSON.stringify({recipient: email, token: token}, null, 2)
+    },
+    function(err, data) {
+      if (err) {
+        console.log(err)
+        callback(err)
+      } else {
+        console.log('Send Email success')
+        callback()
+      }
+    }
+  )
+
+}
+
+/* param add to api function */
 
 const forgotPassword = {
-  onSuccess: (token) => console.log(token.token),
-  onFailure: (err) => console.log(err)
+  sendEmail
 };
 
 const form = {
-  title: 'Auth-O', 
+  title: 'Expiup', 
   body:'Auth-O Service',
-  endPoint: `https://auth-o.com/auth/reset_password`,
+  endPoint: `https://auth.expiup.com/auth/reset_password`,
   redirect: {
     success: `https://auth-o.com/`
   }
 };
 
 const reset = {
-  title: 'Auth-O', 
+  title: 'Expiup', 
   service: 'Expiup',
   redirect: `https://auth-o.com/`
 }
 
+/* generate api functions */
 api.useDatabase({ userdb })
    .generateFunctions({forgotPassword, form, reset});
 
@@ -52,6 +77,6 @@ app
 const awsServerlessExpress = require('aws-serverless-express')
 const server = awsServerlessExpress.createServer(app)
 exports.handler = (event, context) => {
-  awsServerlessExpress.proxy(server, event, context)
+  awsServerlessExpress.proxy(server, event, context);
 }
   
