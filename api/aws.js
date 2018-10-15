@@ -14,33 +14,38 @@ const aws = require('aws-sdk');
 
 const lambda = new aws.Lambda();
 
-function sendEmail({email, token}, callback) {
+function sendEmailFn(functionName) {
+  return function sendEmail({email, token}, callback) {
 
-  console.log(`Sending email containing the reset password link to ${email}`)
+    console.log(`Sending email to ${email}`)
 
-  lambda.invoke(
-    {
-      FunctionName: 'SendEmailResetPassword',
-      InvocationType: "Event",
-      Payload: JSON.stringify({recipient: email, token: token}, null, 2)
-    },
-    function(err, data) {
-      if (err) {
-        console.log(err)
-        callback(err)
-      } else {
-        console.log('Send Email success')
-        callback()
+    lambda.invoke(
+      {
+        FunctionName: functionName,
+        InvocationType: "Event",
+        Payload: JSON.stringify({recipient: email, token: token}, null, 2)
+      },
+      function(err, data) {
+        if (err) {
+          console.log(err)
+          callback(err)
+        } else {
+          console.log('Send Email success')
+          callback()
+        }
       }
-    }
-  )
+    )
 
+  }
 }
-
 /* param add to api function */
 
+const signup = {
+  sendEmail: sendEmailFn('SendEmailVerifyEmail')
+}
+
 const forgotPassword = {
-  sendEmail
+  sendEmail: sendEmailFn('SendEmailResetPassword')
 };
 
 const form = {
@@ -60,7 +65,7 @@ const reset = {
 
 /* generate api functions */
 api.useDatabase({ userdb })
-   .generateFunctions({forgotPassword, form, reset});
+   .generateFunctions({forgotPassword, form, reset, signup});
 
 
 /* create express app from api */  
