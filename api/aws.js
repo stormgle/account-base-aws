@@ -44,6 +44,10 @@ const signup = {
   sendEmail: sendEmailFn('SendEmailVerifyEmail')
 }
 
+const sendVerifyEmail =  {
+  sendEmail: sendEmailFn('SendEmailVerifyEmail')
+}
+
 const forgotPassword = {
   sendEmail: sendEmailFn('SendEmailResetPassword')
 };
@@ -69,7 +73,7 @@ const verifyEmail = {
 
 /* generate api functions */
 api.useDatabase({ userdb })
-   .generateFunctions({forgotPassword, form, reset, signup, verifyEmail});
+   .generateFunctions({forgotPassword, form, reset, signup, verifyEmail, sendVerifyEmail});
 
 
 /* create express app from api */  
