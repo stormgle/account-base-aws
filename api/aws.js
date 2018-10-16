@@ -63,9 +63,13 @@ const reset = {
   redirect: `https://auth-o.com/`
 }
 
+const verifyEmail = {
+  title: 'Expiup',
+}
+
 /* generate api functions */
 api.useDatabase({ userdb })
-   .generateFunctions({forgotPassword, form, reset, signup});
+   .generateFunctions({forgotPassword, form, reset, signup, verifyEmail});
 
 
 /* create express app from api */  
