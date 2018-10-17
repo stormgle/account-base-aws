@@ -49,6 +49,7 @@ const sendVerifyEmail =  {
 }
 
 const sendEmailResetPassword = {
+  title: 'Expiup',
   sendEmail: sendEmailFn('SendEmailResetPassword')
 };
 
