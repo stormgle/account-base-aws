@@ -48,32 +48,36 @@ const sendVerifyEmail =  {
   sendEmail: sendEmailFn('SendEmailVerifyEmail')
 }
 
-const forgotPassword = {
+const sendEmailResetPassword = {
   sendEmail: sendEmailFn('SendEmailResetPassword')
 };
 
 const form = {
   title: 'Expiup', 
-  body:'Auth-O Service',
-  endPoint: `https://auth.expiup.com/auth/reset_password`,
+  endPoint: `https://auth.expiup.com/auth/update_password`,
   redirect: {
-    success: `https://auth-o.com/`
+    success: `https://expiup.com//`
   }
 };
 
-const reset = {
+const updatePassword = {
   title: 'Expiup', 
   service: 'Expiup',
-  redirect: `https://auth-o.com/`
+  redirect: `https://expiup.com/`
 }
 
-const verifyEmail = {
+const emailProps = {
   title: 'Expiup',
+}
+
+const requestResetPasswordLink = {
+  title: 'Expiup',
+  endPoint: `https://auth.expiup.com/auth/send_email_reset_password`
 }
 
 /* generate api functions */
 api.useDatabase({ userdb })
-   .generateFunctions({forgotPassword, form, reset, signup, verifyEmail, sendVerifyEmail});
+   .generateFunctions({sendEmailResetPassword, form, updatePassword, signup, emailProps, sendVerifyEmail, requestResetPasswordLink});
 
 
 /* create express app from api */  
