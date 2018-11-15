@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/stormgle/account-base#readme",
   "dependencies": {
-    "@stormgle/account-base": "^2.4.1",
+    "@stormgle/account-base": "^2.4.2",
     "@stormgle/userdb-dynamodb-driver": "^1.0.6",
     "aws-sdk": "^2.356.0",
     "aws-serverless-express": "^3.1.3",
